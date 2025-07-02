@@ -141,6 +141,7 @@ public class LoveApp {
                 //.advisors(loveAppRagCloudAdvisor)
                 // 应用RAG检索增强服务  基于pgVector向量存储
                 //.advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
+                // 应用RAG检索增强服务  文档查询器+上下文增强器
                 .advisors(
                         LoveAppRagCustomAdvisorFactory.createLoveAppRagCustomAdvisor(
                                 loveAppVectorStore, "单身"
