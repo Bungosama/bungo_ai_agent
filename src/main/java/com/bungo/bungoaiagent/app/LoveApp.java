@@ -143,7 +143,7 @@ public class LoveApp {
                 //.advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
                 .advisors(
                         LoveAppRagCustomAdvisorFactory.createLoveAppRagCustomAdvisor(
-                                loveAppVectorStore, "已婚"
+                                loveAppVectorStore, "单身"
                         )
                 )
                 .call()

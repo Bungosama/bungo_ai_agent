@@ -43,7 +43,7 @@ public class LoveAppRagCustomAdvisorFactory {
 
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(documentRetriever)
-                //.queryAugmenter()
+                .queryAugmenter(LoveAppContextualQueryAugmenterFactory.createLoveAppContextualQueryAugmenter())
                 .build();
     }
 
