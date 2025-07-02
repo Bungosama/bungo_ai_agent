@@ -6,6 +6,8 @@ package com.bungo.bungoaiagent.app;
 import com.bungo.bungoaiagent.advisor.MyLoggerAdvisor;
 import com.bungo.bungoaiagent.advisor.ReReadingAdvisor;
 import com.bungo.bungoaiagent.chatmemory.FileBasedChatMemory;
+import com.bungo.bungoaiagent.rag.LoveAppRagCustomAdvisorFactory;
+import com.bungo.bungoaiagent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -46,6 +48,9 @@ public class LoveApp {
 
     @Resource
     private VectorStore pgVectorVectorStore;
+
+    @Resource
+    private QueryRewriter queryRewriter;
 
     // 构造一个chat client
     private final ChatClient chatClient;
@@ -121,17 +126,26 @@ public class LoveApp {
      * @return
      */
     public String doChatWithRag (String message, String chatId){
+
+        // 方法重写器重写方法
+        String query = queryRewriter.doQueryRewrite(message);
+
         ChatResponse chatResponse = chatClient.prompt()
-                .user(message)
+                .user(query)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId))
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())
                 // 应用RAG知识问答库
                 //.advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
                 // 应用RAG检索增强服务  基于云知识库服务
-                .advisors(loveAppRagCloudAdvisor)
+                //.advisors(loveAppRagCloudAdvisor)
                 // 应用RAG检索增强服务  基于pgVector向量存储
                 //.advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
+                .advisors(
+                        LoveAppRagCustomAdvisorFactory.createLoveAppRagCustomAdvisor(
+                                loveAppVectorStore, "已婚"
+                        )
+                )
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
