@@ -27,20 +27,8 @@ public class ResourceDownloadTool {
             // 创建目录
             FileUtil.mkdir(fileDir);
             // 使用 Hutool 的 downloadFile 方法下载资源
-            //HttpUtil.downloadFile(url, new File(filePath));
-            //return "Resource downloaded successfully to: " + filePath;
-            // 构造请求，添加 User-Agent
-            HttpResponse response = HttpRequest.get(url)
-                    .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X)")
-                    .execute();
-
-            if (response.isOk()) {
-                // 下载成功，写入文件
-                IoUtil.write(new FileOutputStream(filePath), true, response.bodyStream().readAllBytes());
-                return "Resource downloaded successfully to: " + filePath;
-            } else {
-                return "Error: Server returned status code " + response.getStatus();
-            }
+            HttpUtil.downloadFile(url, new File(filePath));
+            return "Resource downloaded successfully to: " + filePath;
         } catch (Exception e) {
             return "Error downloading resource: " + e.getMessage();
         }

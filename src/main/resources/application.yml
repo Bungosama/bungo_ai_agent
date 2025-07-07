@@ -10,6 +10,14 @@ spring:
         dimensions: 1536
         distance-type: cosine_distance
         max-document-batch-size: 10000
+    mcp:
+      client:
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8127
+#        stdio:
+#          servers-configuration: classpath:mcp-servers.json
 server:
   port: 8123
   servlet:
@@ -35,3 +43,8 @@ knife4j:
     language: zh_cn
 
 # searchApi
+
+# 修改日志级别  查看spring ai 更多调用细节
+logging:
+  level:
+    org.springframework.ai: DEBUG

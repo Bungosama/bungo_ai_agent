@@ -82,6 +82,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring AI MCP Client -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
+            <version>1.0.0-M6</version>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>org.slf4j</groupId>-->
 <!--            <artifactId>slf4j-api</artifactId>-->
@@ -185,6 +192,7 @@
             </plugin>
         </plugins>
     </build>
+    <!-- 需要引入仓库配置，才能下载到最新的 Spring AI 相关的依赖 -->
     <repositories>
         <repository>
             <id>spring-milestones</id>
