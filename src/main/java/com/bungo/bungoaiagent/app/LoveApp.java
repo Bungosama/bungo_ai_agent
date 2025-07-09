@@ -25,6 +25,7 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -105,6 +106,22 @@ public class LoveApp {
         String text = chatResponse.getResult().getOutput().getText();
         logger.info("text:{}", text);
         return text;
+    }
+
+    /**
+     * ai 基础对话  支持多轮记忆   支持sse流式传输
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public Flux<String> doChatByStream (String message, String chatId){
+        Flux<String> stringFlux = chatClient.prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .stream()
+                .content();
+        return stringFlux;
     }
 
     record LoveReport(String title, List<String> suggestions){}
