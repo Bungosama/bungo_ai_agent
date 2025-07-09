@@ -1,5 +1,6 @@
 package com.bungo.bungoaiagent.tools;
 
+import com.bungo.bungoaiagent.agent.TerminateTool;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,13 +25,15 @@ public class ToolRegistration {
         TerminalOperationTool terminalOperationTool = new TerminalOperationTool();
         WebSearchTool webSearchTool = new WebSearchTool(apiKey);
         WebScrapingTool webScrapingTool = new WebScrapingTool();
+        TerminateTool terminateTool = new TerminateTool();
         return ToolCallbacks.from(
                 fileOperationTool,
                 pdfGenerationTool,
                 resourceDownloadTool,
                 terminalOperationTool,
                 webSearchTool,
-                webScrapingTool
+                webScrapingTool,
+                terminateTool
         );
     }
 }
